@@ -16,15 +16,23 @@ import java.util.List;
 
 public class DatabaseManager implements IDatabaseManager, OnFailureListener {
     private static final String TAG = "DeviceManager";
+    public static DatabaseManager instance;
     private DatabaseReference mDevicesDatabase;
     private DatabaseReference mScenesDatabase;
 
-    public DatabaseManager(@NonNull FirebaseUser firebaseUser) {
+    private DatabaseManager(@NonNull FirebaseUser firebaseUser) {
         DatabaseReference database = FirebaseDatabase.getInstance()
                 .getReference()
                 .child(firebaseUser.getUid());
         mDevicesDatabase = database.child(DatabaseConstants.KEY_DEVICES);
         mScenesDatabase = database.child(DatabaseConstants.KEY_SCENES);
+    }
+
+    public static DatabaseManager getInstance(FirebaseUser firebaseUser) {
+        if (instance == null) {
+            instance = new DatabaseManager(firebaseUser);
+        }
+        return instance;
     }
 
     @Override

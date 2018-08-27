@@ -83,7 +83,7 @@ public class ScenesFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        mDatabaseManager = new DatabaseManager(firebaseUser);
+        mDatabaseManager = DatabaseManager.getInstance(firebaseUser);
         mDatabase = FirebaseDatabase.getInstance()
                 .getReference()
                 .child(firebaseUser.getUid());
@@ -210,7 +210,9 @@ public class ScenesFragment extends Fragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == RC_REQUEST_PERMISSION) {
-            fetchLocation();
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                fetchLocation();
+            }
         }
     }
 

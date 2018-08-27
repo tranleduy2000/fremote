@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:openDrawer="start">
+    android:layout_height="match_parent">
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -27,6 +25,7 @@
 
             </com.duy.fremote.views.CustomViewPager>
 
+
             <android.support.design.widget.BottomNavigationView
                 android:id="@+id/bottom_nav_view"
                 android:layout_width="match_parent"
@@ -38,6 +37,8 @@
                 app:menu="@menu/bottom_menu">
 
             </android.support.design.widget.BottomNavigationView>
+
+
         </LinearLayout>
 
         <android.support.design.widget.FloatingActionButton
@@ -49,6 +50,18 @@
             app:fabSize="normal"
             app:layout_anchor="@id/bottom_nav_view"
             app:layout_anchorGravity="center|top" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_anchor="@id/btn_voice_action"
+            app:layout_anchorGravity="top|center">
+
+            <net.gotev.speech.ui.SpeechProgressView
+                android:id="@+id/speech_view"
+                android:layout_width="wrap_content"
+                android:layout_height="240dp" />
+        </LinearLayout>
 
 
     </android.support.design.widget.CoordinatorLayout>

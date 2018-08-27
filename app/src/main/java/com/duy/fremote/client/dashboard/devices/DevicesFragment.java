@@ -49,7 +49,6 @@ public class DevicesFragment extends Fragment {
 
     private static final String TAG = "DeviceFragment";
 
-    private FirebaseUser mFirebaseUser;
     private RecyclerView mDeviceListView;
     private DevicesAdapter mDevicesAdapter;
     private IDatabaseManager mDatabaseManager;
@@ -77,11 +76,11 @@ public class DevicesFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        mDatabaseManager = new DatabaseManager(mFirebaseUser);
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        mDatabaseManager = DatabaseManager.getInstance(currentUser);
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        mDevicesDatabase = databaseReference.child(mFirebaseUser.getUid()).child(DatabaseConstants.KEY_DEVICES);
+        mDevicesDatabase = databaseReference.child(currentUser.getUid()).child(DatabaseConstants.KEY_DEVICES);
         getContext().registerReceiver(mUpdateDevicesListener, new IntentFilter(ACTION_UPDATE_STATUS));
     }
 

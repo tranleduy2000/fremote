@@ -1,16 +1,21 @@
 package com.duy.fremote.client.dashboard;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -19,6 +24,7 @@ import com.duy.fremote.LoginActivity;
 import com.duy.fremote.R;
 import com.duy.fremote.server.ServerActivity;
 import com.duy.fremote.server.services.FRemoteService;
+import com.duy.fremote.utils.DLog;
 import com.duy.fremote.views.CustomViewPager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -28,11 +34,22 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class DashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import net.gotev.speech.GoogleVoiceTypingDisabledException;
+import net.gotev.speech.Speech;
+import net.gotev.speech.SpeechDelegate;
+import net.gotev.speech.SpeechRecognitionNotAvailable;
+import net.gotev.speech.ui.SpeechProgressView;
+
+import java.util.List;
+
+public class DashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, SpeechDelegate {
+    private static final String TAG = "DashboardActivity";
+    private static final int RC_REQUEST_RECORD_AUDIO_PERMISSION = 421;
     private FirebaseUser mFirebaseUser;
     private DrawerLayout mDrawerLayout;
     private Toolbar mToolbar;
     private CustomViewPager mViewPager;
+    private SpeechProgressView mSpeechProgressView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,13 +69,8 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
         initBottomNavigationView();
 
-        findViewById(R.id.btn_voice_action).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
+        initSpeechRecognition();
     }
-
 
     private void initBottomNavigationView() {
         final BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav_view);
@@ -119,13 +131,6 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
     }
 
-    private void initView() {
-        mViewPager = findViewById(R.id.view_pager);
-        DashboardPagerAdapter adapter = new DashboardPagerAdapter(getSupportFragmentManager());
-        mViewPager.setAdapter(adapter);
-        mViewPager.setOffscreenPageLimit(adapter.getCount());
-    }
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -161,5 +166,81 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             }
         });
 
+    }
+
+    private void initSpeechRecognition() {
+        Speech.init(this, getPackageName());
+        mSpeechProgressView = findViewById(R.id.speech_view);
+        mSpeechProgressView.animate().alpha(0).start();
+        findViewById(R.id.btn_voice_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startRecognition();
+            }
+        });
+    }
+
+    private void startRecognition() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, RC_REQUEST_RECORD_AUDIO_PERMISSION);
+                return;
+            }
+        }
+        try {
+            mSpeechProgressView.animate().alpha(1).start();
+            // you must have android.permission.RECORD_AUDIO granted at this point
+            Speech.getInstance().startListening(mSpeechProgressView,
+                    DashboardActivity.this);
+        } catch (SpeechRecognitionNotAvailable exc) {
+            Log.e("speech", "Speech recognition is not available on this device!");
+            // You can prompt the user if he wants to install Google App to have
+            // speech recognition, and then you can simply call:
+            //
+            // SpeechUtil.redirectUserToGoogleAppOnPlayStore(this);
+            //
+            // to redirect the user to the Google App page on Play Store
+        } catch (GoogleVoiceTypingDisabledException exc) {
+            Log.e("speech", "Google voice typing must be enabled!");
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == RC_REQUEST_RECORD_AUDIO_PERMISSION) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                startRecognition();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        Speech.getInstance().shutdown();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onStartOfSpeech() {
+
+    }
+
+    @Override
+    public void onSpeechRmsChanged(float value) {
+
+    }
+
+    @Override
+    public void onSpeechPartialResults(List<String> results) {
+        if (DLog.DEBUG)
+            DLog.d(TAG, "onSpeechPartialResults() called with: results = [" + results + "]");
+    }
+
+    @Override
+    public void onSpeechResult(String result) {
+        if (DLog.DEBUG) DLog.d(TAG, "onSpeechResult() called with: result = [" + result + "]");
+        mSpeechProgressView.animate().alpha(0).start();
     }
 }
