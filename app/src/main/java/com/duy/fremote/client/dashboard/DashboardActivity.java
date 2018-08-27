@@ -1,0 +1,6 @@
+package com.duy.fremote.client.dashboard;
+
+import android.support.v7.app.AppCompatActivity;
+
+public class DashboardActivity extends AppCompatActivity {
+}

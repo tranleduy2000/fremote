@@ -6,20 +6,66 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
-    <include layout="@layout/appbar" />
+    <!--<include layout="@layout/appbar" />-->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:weightSum="3"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2">
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:orientation="vertical">
 
 
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_margin="8dp"
+                app:srcCompat="@mipmap/ic_launcher" />
+
+            <com.duy.fremote.views.BaseTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:gravity="center"
+                android:text="@string/app_name"
+                android:textColor="?android:textColorPrimary"
+                android:textSize="32sp" />
+
+            <com.duy.fremote.views.BaseTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/control_your_home_anywhere" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <com.duy.fremote.views.BaseTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/continue_with"
+                android:textColor="?android:textColorPrimary" />
+
+            <com.google.android.gms.common.SignInButton
+                android:layout_width="match_parent"
+                android:id="@+id/btn_sign_in_google"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+
+            </com.google.android.gms.common.SignInButton>
         </LinearLayout>
 
     </LinearLayout>
