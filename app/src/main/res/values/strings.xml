@@ -3,4 +3,6 @@
     <string name="title_activity_sign_in">Sign in</string>
     <string name="continue_with">Continue with</string>
     <string name="control_your_home_anywhere">Control your home anywhere</string>
+    <string name="home">Home</string>
+    <string name="devices">Devices</string>
 </resources>
