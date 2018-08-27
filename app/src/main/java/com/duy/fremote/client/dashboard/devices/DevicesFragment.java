@@ -19,12 +19,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.duy.fremote.R;
+import com.duy.fremote.client.dashboard.dialogs.AddDeviceDialog;
+import com.duy.fremote.client.dashboard.dialogs.AddSceneDialog;
 import com.duy.fremote.client.dashboard.scenes.ScenesFragment;
 import com.duy.fremote.client.database.DatabaseConstants;
 import com.duy.fremote.client.database.DatabaseManager;
 import com.duy.fremote.client.database.IDatabaseManager;
+import com.duy.fremote.models.ResultCallback;
 import com.duy.fremote.models.devices.DigitalDevice;
+import com.duy.fremote.models.devices.IArduinoDevice;
+import com.duy.fremote.models.scenes.IScene;
 import com.duy.fremote.utils.DLog;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -188,25 +195,25 @@ public class DevicesFragment extends Fragment {
     }
 
     private void showDialogCreateNewScene() {
-//        AddSceneDialog dialog = new AddSceneDialog(getContext(),
-//                new ResultCallback<IScene>() {
-//                    @Override
-//                    public void onSuccess(IScene scene) {
-//                        scene.setDevicesStatus(mDevicesAdapter.getDevices());
-//                        mDatabaseManager.addScene(scene, new OnCompleteListener<Void>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<Void> task) {
-//                                notifyUpdateScenes();
-//                            }
-//                        });
-//                    }
-//
-//                    @Override
-//                    public void onFailure(@Nullable Exception e) {
-//
-//                    }
-//                });
-//        dialog.show();
+        AddSceneDialog dialog = new AddSceneDialog(getContext(),
+                new ResultCallback<IScene>() {
+                    @Override
+                    public void onSuccess(IScene scene) {
+                        scene.setDevicesStatus(mDevicesAdapter.getDevices());
+                        mDatabaseManager.addScene(scene, new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                notifyUpdateScenes();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(@Nullable Exception e) {
+
+                    }
+                });
+        dialog.show();
     }
 
     private void notifyUpdateScenes() {
@@ -219,19 +226,19 @@ public class DevicesFragment extends Fragment {
     }
 
     private void showDialogAddDevice() {
-//        AddDeviceDialog addDeviceDialog = new AddDeviceDialog(getContext(),
-//                new ResultCallback<IArduinoDevice>() {
-//                    @Override
-//                    public void onSuccess(IArduinoDevice result) {
-//                        mDatabaseManager.addDevice(result);
-//                        fetchDevicesList();
-//                    }
-//
-//                    @Override
-//                    public void onFailure(@Nullable Exception e) {
-//
-//                    }
-//                });
-//        addDeviceDialog.show();
+        AddDeviceDialog addDeviceDialog = new AddDeviceDialog(getContext(),
+                new ResultCallback<IArduinoDevice>() {
+                    @Override
+                    public void onSuccess(IArduinoDevice result) {
+                        mDatabaseManager.addDevice(result);
+                        fetchDevicesList();
+                    }
+
+                    @Override
+                    public void onFailure(@Nullable Exception e) {
+
+                    }
+                });
+        addDeviceDialog.show();
     }
 }
