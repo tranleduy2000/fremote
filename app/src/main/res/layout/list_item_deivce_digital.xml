@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp">
+
+    <FrameLayout
+        android:id="@+id/root_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:src="@mipmap/ic_launcher" />
+
+            <com.duy.iotcontrol.client.views.BaseTextView
+                android:id="@+id/txt_device_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:text="Light in living room. Long Name Long Name. Very Long Name"
+                android:textColor="?android:textColorPrimary" />
+
+            <com.duy.iotcontrol.client.views.BaseTextView
+                android:id="@+id/txt_device_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:text="Id: 2"
+                android:textColor="?android:textColorPrimary"
+                android:visibility="gone" />
+
+            <com.duy.iotcontrol.client.views.BaseSwitch
+                android:id="@+id/status_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                app:colorBorder="@color/colorAccent"
+                app:on="false"
+                app:textOff="@string/off"
+                app:textOn="@string/on" />
+        </LinearLayout>
+
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/btn_more_action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:background="?selectableItemBackgroundBorderless"
+            android:padding="8dp"
+            android:tint="?android:textColorSecondary"
+            app:srcCompat="@drawable/round_more_vert_24" />
+    </FrameLayout>
+
+
+</android.support.v7.widget.CardView>

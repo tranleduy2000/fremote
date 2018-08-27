@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_add_device"
+        android:icon="@drawable/round_add_24"
+        android:title="@string/add_device" />
+
+    <item
+        android:id="@+id/action_create_scene"
+        android:icon="@drawable/round_schedule_24"
+        android:title="@string/create_new_scene" />
+</menu>

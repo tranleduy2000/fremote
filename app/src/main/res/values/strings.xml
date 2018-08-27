@@ -5,4 +5,8 @@
     <string name="control_your_home_anywhere">Control your home anywhere</string>
     <string name="home">Home</string>
     <string name="devices">Devices</string>
+    <string name="add_device">Add device</string>
+    <string name="create_new_scene">Create new scene</string>
+    <string name="edit">Edit</string>
+    <string name="remove">Remove</string>
 </resources>
