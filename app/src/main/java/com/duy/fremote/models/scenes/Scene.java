@@ -1,6 +1,5 @@
 package com.duy.fremote.models.scenes;
 
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.duy.fremote.models.devices.DigitalDevice;
@@ -14,6 +13,7 @@ public class Scene implements Serializable, IScene {
     private String name = "";
     private String description;
     private long timeStart, timeEnd;
+    private int iconIndex;
 
     public Scene() {
         devicesStatus = new ArrayList<>();
@@ -29,7 +29,16 @@ public class Scene implements Serializable, IScene {
         this.devicesStatus = devicesStatus;
     }
 
-    @NonNull
+    @Override
+    public int getIconIndex() {
+        return iconIndex;
+    }
+
+    @Override
+    public void setIconIndex(int iconIndex) {
+        this.iconIndex = iconIndex;
+    }
+
     @Override
     public String getName() {
         return name;

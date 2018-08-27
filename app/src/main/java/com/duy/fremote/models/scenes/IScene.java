@@ -12,6 +12,10 @@ public interface IScene {
 
     void setDevicesStatus(List<DigitalDevice> devicesStatus);
 
+    int getIconIndex();
+
+    void setIconIndex(int iconIndex);
+
     @NonNull
     String getName();
 

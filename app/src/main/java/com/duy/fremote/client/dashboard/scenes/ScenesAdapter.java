@@ -14,6 +14,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.duy.fremote.R;
+import com.duy.fremote.client.database.DatabaseConstants;
 import com.duy.fremote.client.database.DatabaseManager;
 import com.duy.fremote.models.ResultCallback;
 import com.duy.fremote.models.devices.DigitalDevice;
@@ -66,6 +67,10 @@ public class ScenesAdapter extends RecyclerView.Adapter<ScenesAdapter.ViewHolder
                 }
             }
         });
+        int iconIndex = scene.getIconIndex();
+        if (iconIndex >= 0 && iconIndex < DatabaseConstants.SCENE_ICON_IDS.length) {
+            holder.iconView.setImageResource(DatabaseConstants.SCENE_ICON_IDS[iconIndex]);
+        }
     }
 
 
@@ -136,7 +141,7 @@ public class ScenesAdapter extends RecyclerView.Adapter<ScenesAdapter.ViewHolder
             super(itemView);
             txtName = itemView.findViewById(R.id.txt_name);
             txtDescription = itemView.findViewById(R.id.txt_description);
-            iconView = itemView.findViewById(R.id.icon);
+            iconView = itemView.findViewById(R.id.icon_view);
             txtTime = itemView.findViewById(R.id.txt_time);
             btnMoreAction = itemView.findViewById(R.id.btn_more_action);
             rootView = itemView.findViewById(R.id.root_view);

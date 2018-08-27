@@ -7,6 +7,8 @@ import java.io.Serializable;
 public interface IArduinoDevice extends Serializable {
     int getPin();
 
+    int getIconIndex();
+
     @Nullable
     String getName();
 

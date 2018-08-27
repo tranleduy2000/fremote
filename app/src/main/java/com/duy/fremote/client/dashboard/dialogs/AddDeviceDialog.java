@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatDialog;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.duy.fremote.R;
+import com.duy.fremote.client.database.DatabaseConstants;
 import com.duy.fremote.models.ResultCallback;
 import com.duy.fremote.models.devices.DigitalDevice;
 import com.duy.fremote.models.devices.IArduinoDevice;
@@ -15,6 +17,8 @@ import com.duy.fremote.models.devices.IArduinoDevice;
 public class AddDeviceDialog extends AppCompatDialog {
     private EditText editPin;
     private EditText editDeviceName;
+    private Spinner iconList;
+
     private ResultCallback<IArduinoDevice> onCompleteListener;
 
     public AddDeviceDialog(Context context, ResultCallback<IArduinoDevice> onCompleteListener) {
@@ -28,6 +32,8 @@ public class AddDeviceDialog extends AppCompatDialog {
         setContentView(R.layout.dialog_new_device);
         editDeviceName = findViewById(R.id.edit_device_name);
         editPin = findViewById(R.id.edit_device_pin);
+        iconList = findViewById(R.id.spinner_icons);
+        iconList.setAdapter(new IconAdapter(getContext(), -1, DatabaseConstants.DEVICE_ICON_IDS));
 
         findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,6 +49,7 @@ public class AddDeviceDialog extends AppCompatDialog {
                         int pin = Integer.parseInt(editPin.getText().toString());
                         String name = editDeviceName.getText().toString();
                         DigitalDevice digitalDevice = new DigitalDevice(name, pin);
+                        digitalDevice.setIconIndex(iconList.getSelectedItemPosition());
                         if (onCompleteListener != null) {
                             onCompleteListener.onSuccess(digitalDevice);
                         }

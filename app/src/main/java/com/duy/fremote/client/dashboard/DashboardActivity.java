@@ -42,7 +42,6 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         setSupportActionBar(mToolbar);
         setTitle(R.string.title_activity_dashboard);
 
-
         mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         initNavigationView();
 
@@ -56,10 +55,10 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         findViewById(R.id.btn_voice_action).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 27-Aug-18
             }
         });
     }
+
 
     private void initBottomNavigationView() {
         final BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav_view);

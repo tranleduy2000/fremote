@@ -33,4 +33,8 @@
     <string name="select_device">Select bluetooth device</string>
     <string name="connect">Connect</string>
     <string name="disconnect">Disconnect</string>
+
+    <string name="light">Light</string>
+    <string name="fan">Fan</string>
+    <string name="icon">Icon</string>
 </resources>

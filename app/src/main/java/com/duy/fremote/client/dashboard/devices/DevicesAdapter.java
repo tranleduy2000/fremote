@@ -7,10 +7,12 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.duy.fremote.R;
+import com.duy.fremote.client.database.DatabaseConstants;
 import com.duy.fremote.client.database.IDatabaseManager;
 import com.duy.fremote.models.devices.DigitalDevice;
 import com.github.angads25.toggle.LabeledSwitch;
@@ -63,6 +65,10 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHold
                 onToggledListener.onSwitched(holder.statusView, holder.statusView.isOn());
             }
         });
+        int iconIndex = device.getIconIndex();
+        if (iconIndex >= 0 && iconIndex < DatabaseConstants.DEVICE_ICON_IDS.length) {
+            holder.iconView.setImageResource(DatabaseConstants.DEVICE_ICON_IDS[iconIndex]);
+        }
     }
 
     private void displayMenuFor(View view, final DigitalDevice device) {
@@ -111,6 +117,7 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHold
         private View openMenuView;
         private LabeledSwitch statusView;
         private View rootView;
+        private ImageView iconView;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -118,6 +125,7 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHold
             openMenuView = itemView.findViewById(R.id.btn_more_action);
             statusView = itemView.findViewById(R.id.status_view);
             rootView = itemView.findViewById(R.id.root_view);
+            iconView = itemView.findViewById(R.id.img_icon);
         }
     }
 }

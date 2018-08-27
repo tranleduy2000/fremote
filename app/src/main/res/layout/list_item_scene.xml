@@ -20,13 +20,13 @@
         android:orientation="horizontal">
 
         <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/icon"
+            android:id="@+id/icon_view"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_gravity="center"
-            android:padding="8dp"
+            android:padding="12dp"
             android:scaleType="centerInside"
-            android:src="@drawable/round_home_24"
+            android:src="@drawable/ic_scene_get_up_128"
             android:tint="?colorAccent" />
 
         <LinearLayout
