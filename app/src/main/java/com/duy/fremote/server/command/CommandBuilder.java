@@ -1,8 +1,7 @@
 package com.duy.fremote.server.command;
 
-import android.text.TextUtils;
-
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class CommandBuilder {
     private ArrayList<String> args = new ArrayList<>();
@@ -43,7 +42,16 @@ public class CommandBuilder {
     }
 
     public String build() {
-        return TextUtils.join(" ", args);
+        StringBuilder sb = new StringBuilder();
+        Iterator<?> it = args.iterator();
+        if (it.hasNext()) {
+            sb.append(it.next());
+            while (it.hasNext()) {
+                sb.append(" ");
+                sb.append(it.next());
+            }
+        }
+        return sb.toString();
     }
 
 }

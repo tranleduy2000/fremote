@@ -22,7 +22,10 @@ import android.widget.TextView;
 
 import com.duy.fremote.LoginActivity;
 import com.duy.fremote.R;
+import com.duy.fremote.client.dashboard.devices.DevicesFragment;
+import com.duy.fremote.client.database.DatabaseManager;
 import com.duy.fremote.server.ServerActivity;
+import com.duy.fremote.server.command.ViCommandProcessor;
 import com.duy.fremote.server.services.FRemoteService;
 import com.duy.fremote.utils.DLog;
 import com.duy.fremote.views.CustomViewPager;
@@ -51,6 +54,8 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     private CustomViewPager mViewPager;
     private SpeechProgressView mSpeechProgressView;
 
+    private DatabaseManager mDatabaseManager;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +65,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         setTitle(R.string.title_activity_dashboard);
 
         mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        mDatabaseManager = DatabaseManager.getInstance(mFirebaseUser);
         initNavigationView();
 
         mViewPager = findViewById(R.id.view_pager);
@@ -68,7 +74,6 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         mViewPager.setOffscreenPageLimit(mViewPager.getAdapter().getCount());
 
         initBottomNavigationView();
-
         initSpeechRecognition();
     }
 
@@ -242,5 +247,17 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     public void onSpeechResult(String result) {
         if (DLog.DEBUG) DLog.d(TAG, "onSpeechResult() called with: result = [" + result + "]");
         mSpeechProgressView.animate().alpha(0).start();
+
+        ViCommandProcessor commandProcessor = new ViCommandProcessor(mDatabaseManager);
+        boolean success = commandProcessor.process(result, mDatabaseManager.getAllDevices());
+        if (success) {
+            notifyDevicesStatusChanged();
+        }
+    }
+
+    private void notifyDevicesStatusChanged() {
+        Intent intent = new Intent();
+        intent.setAction(DevicesFragment.ACTION_UPDATE_STATUS);
+        sendBroadcast(intent);
     }
 }
