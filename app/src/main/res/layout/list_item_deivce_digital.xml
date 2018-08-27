@@ -26,7 +26,7 @@
                 android:layout_marginTop="8dp"
                 android:src="@mipmap/ic_launcher" />
 
-            <com.duy.iotcontrol.client.views.BaseTextView
+            <com.duy.fremote.views.BaseTextView
                 android:id="@+id/txt_device_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
                 android:text="Light in living room. Long Name Long Name. Very Long Name"
                 android:textColor="?android:textColorPrimary" />
 
-            <com.duy.iotcontrol.client.views.BaseTextView
+            <com.duy.fremote.views.BaseTextView
                 android:id="@+id/txt_device_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
                 android:textColor="?android:textColorPrimary"
                 android:visibility="gone" />
 
-            <com.duy.iotcontrol.client.views.BaseSwitch
+            <com.duy.fremote.views.BaseSwitch
                 android:id="@+id/status_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
