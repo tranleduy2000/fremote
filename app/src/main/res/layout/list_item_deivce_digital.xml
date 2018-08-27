@@ -59,8 +59,8 @@
                 android:focusableInTouchMode="false"
                 app:colorBorder="@color/colorAccent"
                 app:on="false"
-                app:textOff="@string/off"
-                app:textOn="@string/on" />
+                app:textOff="OFF"
+                app:textOn="ON" />
         </LinearLayout>
 
 
