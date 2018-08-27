@@ -2,8 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_switch_server_mode"
+        android:icon="@drawable/round_label_important_24"
         android:title="@string/server_mode" />
     <item
         android:id="@+id/action_sign_out"
+        android:icon="@drawable/round_exit_to_app_24"
         android:title="@string/log_out" />
 </menu>

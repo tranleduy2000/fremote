@@ -126,6 +126,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         View headerView = navigationView.getHeaderView(0);
         TextView txtName = headerView.findViewById(R.id.txt_name);
         String displayName = mFirebaseUser.getDisplayName();
+        displayName += "\n" + mFirebaseUser.getEmail();
         txtName.setText(displayName);
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
