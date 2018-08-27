@@ -28,4 +28,9 @@
     <string name="temperature">Temperature</string>
     <string name="humidity">Humidity</string>
     <string name="apply_scene">Apply scene</string>
+    <string name="enter_command">Enter command</string>
+    <string name="send">Send</string>
+    <string name="select_device">Select bluetooth device</string>
+    <string name="connect">Connect</string>
+    <string name="disconnect">Disconnect</string>
 </resources>
