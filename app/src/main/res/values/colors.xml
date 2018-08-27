@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorAccent">#42a5f5</color>
+    <color name="home_header_text_color">#fff</color>
 </resources>
