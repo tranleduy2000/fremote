@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 
 import com.duy.fremote.R;
 import com.duy.fremote.client.dashboard.scenes.ScenesFragment;
+import com.duy.fremote.client.database.DatabaseConstants;
 import com.duy.fremote.client.database.DatabaseManager;
 import com.duy.fremote.client.database.IDatabaseManager;
 import com.duy.fremote.models.devices.DigitalDevice;
@@ -71,6 +72,9 @@ public class DevicesFragment extends Fragment {
         setHasOptionsMenu(true);
         mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabaseManager = new DatabaseManager(mFirebaseUser);
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        mDevicesDatabase = databaseReference.child(mFirebaseUser.getUid()).child(DatabaseConstants.KEY_DEVICES);
         getContext().registerReceiver(mUpdateDevicesListener, new IntentFilter(ACTION_UPDATE_STATUS));
     }
 
@@ -121,38 +125,35 @@ public class DevicesFragment extends Fragment {
      * Get data from database
      */
     private void fetchDevicesList() {
-        //need clear all data before update
+        //need clear all data before update, update UI
         mDevicesAdapter.clearAll();
-
         mSwipeRefreshLayout.setRefreshing(true);
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        mDevicesDatabase = databaseReference.child(mFirebaseUser.getUid()).child("devices");
-        if (mValueEventListener != null) {
-            mDevicesDatabase.removeEventListener(mValueEventListener);
-        }
-        mValueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (DLog.DEBUG)
-                    DLog.d(TAG, "onDataChange() called with: dataSnapshot = [" + dataSnapshot + "]");
-                List<DigitalDevice> devicesList = new ArrayList<>();
-                for (DataSnapshot item : dataSnapshot.getChildren()) {
-                    try {
 
-                        DigitalDevice device = item.getValue(DigitalDevice.class);
-                        devicesList.add(device);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+        if (mValueEventListener == null) {
+            mValueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (DLog.DEBUG)
+                        DLog.d(TAG, "onDataChange() called with: dataSnapshot = [" + dataSnapshot + "]");
+                    List<DigitalDevice> devicesList = new ArrayList<>();
+                    for (DataSnapshot item : dataSnapshot.getChildren()) {
+                        try {
+                            DigitalDevice device = item.getValue(DigitalDevice.class);
+                            devicesList.add(device);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
+                    displayData(devicesList);
                 }
-                displayData(devicesList);
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        };
+                }
+            };
+        }
+        mDevicesDatabase.removeEventListener(mValueEventListener);
         mDevicesDatabase.addListenerForSingleValueEvent(mValueEventListener);
     }
 

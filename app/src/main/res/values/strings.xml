@@ -9,4 +9,17 @@
     <string name="create_new_scene">Create new scene</string>
     <string name="edit">Edit</string>
     <string name="remove">Remove</string>
+    <string name="device_name_optional">Device name (optional)</string>
+    <string name="device_pin_required">Device pin (required)</string>
+    <string name="cancel">Cancel</string>
+    <string name="add">Add</string>
+    <string name="scene_name_required">Scene name (requried)</string>
+    <string name="description">Description</string>
+    <string name="enter_device_pin">Enter device PIN</string>
+    <string name="enter_name">Enter name</string>
+    <string name="title_activity_dashboard">Dashboard</string>
+    <string name="server_mode">Server mode</string>
+    <string name="log_out">Log out</string>
+    <string name="open_drawer">Open drawer</string>
+    <string name="close_drawer">Close drawer</string>
 </resources>
