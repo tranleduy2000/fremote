@@ -27,7 +27,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private static final int RC_SIGN_IN = 120;
     private static final String TAG = "LoginActivity";
 
-    private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
 
     @Override
@@ -71,11 +70,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this, gso);
+        Intent signInIntent = googleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
-
     }
 
     @Override
