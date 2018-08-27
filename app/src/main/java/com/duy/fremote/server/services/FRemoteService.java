@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -31,6 +32,8 @@ import java.util.ArrayList;
 
 public class FRemoteService extends Service implements IBluetoothService, IMessageListener {
     private static final String TAG = "FRemoteService";
+    private static final int REQUEST_ENV_INTERVAL_TIME = 1000 * 30 /*30s*/;
+
     private IBinder mBinder;
     @Nullable
     private IConnectListener mConnectListener;
@@ -44,6 +47,20 @@ public class FRemoteService extends Service implements IBluetoothService, IMessa
     private DatabaseReference mDevicesDatabase;
     private ChildEventListener mDevicesStatusListener;
 
+    private Handler mHandler = new Handler();
+    private Runnable mRequestEnvironmentInformation = new Runnable() {
+        @Override
+        public void run() {
+            if (isBluetoothConnected()) {
+                String cmd = new CommandBuilder().requestHumidity().build();
+                sendCommand(cmd);
+                cmd = new CommandBuilder().requestTemperature().build();
+                sendCommand(cmd);
+            }
+            mHandler.postDelayed(this, REQUEST_ENV_INTERVAL_TIME);
+        }
+    };
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -55,7 +72,7 @@ public class FRemoteService extends Service implements IBluetoothService, IMessa
         super.onCreate();
         mBinder = new FRemoteServiceBinder();
         mMessageListeners = new ArrayList<>();
-
+        mHandler.post(mRequestEnvironmentInformation);
         addDatabaseListener();
     }
 
@@ -112,15 +129,15 @@ public class FRemoteService extends Service implements IBluetoothService, IMessa
     @Override
     public void sendCommand(@NonNull String command) {
         try {
+            onNewMessage(new MessageItem(MessageItem.TYPE_OUT, command));
             if (mIOThread != null) {
                 mIOThread.write(command + "\n");
-                onNewMessage(new MessageItem(MessageItem.TYPE_OUT, command));
             } else {
                 throw new IOException("Not connected");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            onNewMessage(new MessageItem(MessageItem.TYPE_IN, "Error: " + e.getMessage()));
+            onNewMessage(new MessageItem(MessageItem.TYPE_ERROR, "Error: " + e.getMessage()));
         }
     }
 
@@ -145,7 +162,7 @@ public class FRemoteService extends Service implements IBluetoothService, IMessa
                         if (e == null) {
                             return;
                         }
-                        onNewMessage(new MessageItem(MessageItem.TYPE_IN, "Error: " + e.getMessage()));
+                        onNewMessage(new MessageItem(MessageItem.TYPE_ERROR, "Error: " + e.getMessage()));
                     }
                 });
         connectBluetoothTask.execute();
@@ -221,6 +238,7 @@ public class FRemoteService extends Service implements IBluetoothService, IMessa
     public void onDestroy() {
         if (DLog.DEBUG) DLog.d(TAG, "onDestroy() called");
 
+        mHandler.removeCallbacks(mRequestEnvironmentInformation);
         if (mDevicesDatabase != null) {
             mDevicesDatabase.removeEventListener(mDevicesStatusListener);
         }
@@ -231,7 +249,6 @@ public class FRemoteService extends Service implements IBluetoothService, IMessa
             }
         }
         disconnect();
-
         super.onDestroy();
     }
 

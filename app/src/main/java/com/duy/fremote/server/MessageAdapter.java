@@ -29,6 +29,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageH
             case MessageItem.TYPE_IN:
                 return new MessageHolder(
                         mLayoutInflater.inflate(R.layout.list_item_message_in, parent, false));
+            case MessageItem.TYPE_ERROR:
+                return new MessageHolder(
+                        mLayoutInflater.inflate(R.layout.list_item_message_error, parent, false));
             default:
                 return new MessageHolder(
                         mLayoutInflater.inflate(R.layout.list_item_message_out, parent, false));

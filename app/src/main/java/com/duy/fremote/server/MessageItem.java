@@ -3,6 +3,7 @@ package com.duy.fremote.server;
 public class MessageItem {
     public static final int TYPE_IN = 0;
     public static final int TYPE_OUT = 1;
+    public static final int TYPE_ERROR = 2;
 
     private int type;
     private String content;

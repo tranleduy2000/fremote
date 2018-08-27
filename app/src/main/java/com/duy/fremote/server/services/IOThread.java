@@ -15,14 +15,14 @@ import java.io.OutputStreamWriter;
 class IOThread extends Thread {
     private static final String TAG = "ReadThread";
     private BluetoothSocket mSocket;
-    private IMessageListener listener;
+    private IMessageListener mListener;
 
     private BufferedReader mReader;
     private BufferedWriter mWriter;
 
     IOThread(@NonNull BluetoothSocket socket, IMessageListener listener) {
-        this.mSocket = socket;
-        this.listener = listener;
+        mSocket = socket;
+        mListener = listener;
 
         try {
             mReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -38,8 +38,8 @@ class IOThread extends Thread {
         try {
             while (!isInterrupted()) {
                 String line = mReader.readLine();
-                if (listener != null) {
-                    listener.onNewMessage(new MessageItem(MessageItem.TYPE_IN, line));
+                if (mListener != null) {
+                    mListener.onNewMessage(new MessageItem(MessageItem.TYPE_IN, line));
                 }
             }
         } catch (Exception e) {
@@ -57,6 +57,7 @@ class IOThread extends Thread {
         interrupt();
         mWriter.flush();
         mWriter.close();
+
         mReader.close();
         mSocket.close();
     }

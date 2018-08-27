@@ -22,8 +22,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".client.dashboard.DashboardActivity" />
+        <activity android:name=".server.ServerActivity" />
 
-        <service android:name=".server.services.FRemoteService" />
+        <service
+            android:name=".server.services.FRemoteService"
+            android:enabled="true" />
     </application>
 
 </manifest>

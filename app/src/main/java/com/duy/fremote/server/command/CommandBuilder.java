@@ -27,7 +27,23 @@ public class CommandBuilder {
         return add(String.valueOf(pin));
     }
 
+    public CommandBuilder request() {
+        add(CommandConstants.GET);
+        return this;
+    }
+
+    public CommandBuilder requestHumidity() {
+        add(CommandConstants.GET_HUMIDITY);
+        return this;
+    }
+
+    public CommandBuilder requestTemperature() {
+        add(CommandConstants.GET_TEMPERATURE);
+        return this;
+    }
+
     public String build() {
         return TextUtils.join(" ", args);
     }
+
 }
